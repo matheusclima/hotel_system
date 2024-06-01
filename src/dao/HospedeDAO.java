@@ -2,114 +2,84 @@ package dao;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.EOFException;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import domain.Hospede;
 import interfaces.*;
 
-public class HospedeDAO implements HospedeDAOInterface {
+public class HospedeDAO implements DAOInterface<Hospede> {
 
-    private static final String FILE_PATH = "src\\db\\hospedes.dat";
+    private static final String FILE_PATH = "src\\db\\hospedes.txt";
 
     @Override
     public boolean cadastrar(Hospede hospede) {
-        /* FileWriter fw = null;
-        // Método utilizando FileWriter
+        if(consultar(hospede).equals(null)) {
+            return false;
+        }
+        FileWriter fw = null;
         try {
-            fw = new FileWriter("src\\db\\hospedes.txt", true);
+            fw = new FileWriter(FILE_PATH, true);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(hospede.toString());
             bw.newLine();
             bw.close();
             fw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true; */
-        ObjectOutputStream obj = null;
-        ArrayList<Hospede> hospedes = listar();
-        hospedes.add(hospede);
-        try {
-            FileOutputStream arq = new FileOutputStream(FILE_PATH);
-            obj = new ObjectOutputStream(arq);
-            obj.writeObject(hospedes);
-            obj.flush();
-            obj.close();
-            return true;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Erro ao salvar os hospedes: " + e.getMessage());
             return false;
         }
-    }
-
-    public boolean editar(Hospede hospede) {
-        
         return true;
+        
     }
 
-    public Hospede consultar(Hospede hospede) {
-        // FileReader fr = null;
-        // try {
-        //     fr = new FileReader(FILE_PATH);
-        //     BufferedReader br = new BufferedReader(fr);
-        //     while(br.ready()) {
-        //         String hospedeString = br.readLine();
-        //         if(hospedeString.equalsIgnoreCase(hospede.toString())) {
-        //             return hospede;
-        //         }
+    @Override
+    public boolean editar(Hospede hospede) {
+        return false;
+        // ArrayList<Hospede> hospedes = listar();
+        // boolean encontrado = false;
+        // for(int i = 0; i < hospedes.size(); i++) {
+        //     if(hospedes.get(i).getCpf().equals(hospede.getCpf())) {
+        //         hospedes.set(i, hospede);
+        //         encontrado = true;
+        //         break;
         //     }
-        // } catch (Exception e) {
-        //     // TODO: handle exception
         // }
-        // return null;
+        // if(encontrado){
+        //     return (hospedes);
+        // } else {
+        //     System.out.println("Hóspede não encontrado");
+        //     return false;
+        // }
+    }
+    
+    @Override
+    public Hospede consultar(Hospede hospede) {
         ArrayList<Hospede> hospedes = listar();
         for(Hospede h: hospedes) {
-            if(h.equals(hospede)) {
-                return hospede;
+            if(h.getCpf().equals(hospede.getCpf())) {
+                return h;
             }
         }
-        return null; 
-
+        return null;
     } 
 
     @Override
-    @SuppressWarnings({ "unchecked" })
     public ArrayList<Hospede> listar() {
         ArrayList<Hospede> hospedes = new ArrayList<Hospede>();
-        // FileReader fr = null;
-        
-        /* 
-        // Método utilizando FileReader
+        FileReader fr = null;
         try {
-            fr = new FileReader("src\\db\\hospedes.txt");
+            fr = new FileReader(FILE_PATH); 
             BufferedReader br = new BufferedReader(fr);
             while(br.ready()) {
                 String hospedeString = br.readLine();
-                String[] hospedeInfo = hospedeString.split(";");
-                hospedes.add(new Hospede(hospedeInfo[0], hospedeInfo[1], hospedeInfo[2], hospedeInfo[3]));
+                String[] hospInfo = hospedeString.split(";");
+                Hospede hospede = new Hospede(hospInfo[0], hospInfo[1], hospInfo[2], hospInfo[3]);
+                hospedes.add(hospede);
             }
-            br.close();
-            fr.close();
-        } catch (Exception e) {
-            TODO: handle exception
-        }
-        return hospedes; */
-        
-        ObjectInputStream input = null;
-        try {
-            FileInputStream arquivo = new FileInputStream(FILE_PATH); 
-            input = new ObjectInputStream(arquivo);
-            hospedes = (ArrayList<Hospede>) input.readObject();
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException e) {
             System.out.println(e);
         }
         return hospedes;

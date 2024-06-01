@@ -1,10 +1,6 @@
 package domain;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class Categoria implements Serializable {
     private int codigo;
@@ -22,47 +18,10 @@ public class Categoria implements Serializable {
         this.descricao = descricao;
         this.valor = valor;
     }
-    
-    public boolean cadastrar(Categoria cat) {
-        try {
-            FileOutputStream arq = new FileOutputStream("hospedes.ser");
-            ObjectOutputStream obj = new ObjectOutputStream(arq);
-            obj.writeObject(cat);
-            obj.close();
-            return true;
-        } catch (Exception e) {
-            System.out.println(e);
-            return false;
-        }
-    }
 
-    public boolean editar(Categoria cat) {
-        // TODO
-        return true;
-    }
-
-    public Categoria consultar(Categoria cat) {
-        // TODO
-        return cat;
-    }
-
-    public Categoria listar(Categoria cat) {
-        try {
-            FileInputStream arquivo = new FileInputStream("hospedes.ser"); 
-            ObjectInputStream input = new ObjectInputStream(arquivo);
-            Categoria categoria = (Categoria) input.readObject();
-            input.close();
-            System.out.printf( " %d\n %s\n %.2f\n",
-                categoria.getCodigo(),
-                categoria.getDescricao(),
-                categoria.getValor());
-
-            return categoria;
-        } catch (Exception e) {
-            // TODO: handle exception
-            System.out.println(e);
-            return null;
-        }
+    @Override
+    public String toString() {
+        return String.format("%d;%s;%f", this.codigo, this.descricao, this.valor);
     }
 
     public int getCodigo() {

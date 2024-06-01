@@ -19,23 +19,8 @@ public class Quarto {
         this.status = status;
     }
 
-    public boolean cadastrar(Quarto quarto) {
-        // TODO
-        return true;
-    }
-
-    public boolean editar(Quarto quarto) {
-        // TODO
-        return true;
-    }
-
-    public Quarto consultar(Quarto quarto) {
-        // TODO
-        return quarto;
-    }
-
-    public ArrayList<Quarto> listar(Quarto quarto) {
-        // TODO
-        return new ArrayList<Quarto>();
+    @Override
+    public String toString() {
+        return String.format("%d;%d;%s", this.codigo, this.categoria.getCodigo(), this.status);
     }
 }
