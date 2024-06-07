@@ -1,8 +1,6 @@
 package domain;
 
-import java.io.Serializable;
-
-public abstract class Pessoa implements Serializable {
+public abstract class Pessoa extends Generic {
     private String cpf;
     private String nome;
     private String email;
@@ -17,6 +15,17 @@ public abstract class Pessoa implements Serializable {
         this.cpf = cpf;
         this.nome = nome;
         this.email = email;
+    }
+
+    public Pessoa(String[] attr) {
+        this.cpf = attr[0];
+        this.nome = attr[1];
+        this.email = attr[2];
+    }
+
+    @Override
+    public String getId() {
+        return this.cpf;
     }
 
     public String getCpf() {

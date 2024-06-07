@@ -1,8 +1,6 @@
 package domain;
 
-import java.io.Serializable;
-
-public class Categoria implements Serializable {
+public class Categoria extends Generic {
     private int codigo;
     private String descricao;
     private double valor;
@@ -19,9 +17,20 @@ public class Categoria implements Serializable {
         this.valor = valor;
     }
 
+    public Categoria(String[] attr) {
+        this.codigo = Integer.parseInt(attr[0]);
+        this.descricao = attr[1];
+        this.valor = Double.parseDouble(attr[2].replace(",", "."));
+    }
+
     @Override
     public String toString() {
-        return String.format("%d;%s;%f", this.codigo, this.descricao, this.valor);
+        return String.format("%d;%s;%.2f", this.codigo, this.descricao, this.valor);
+    }
+
+    @Override
+    public String getId() {
+        return Integer.toString(this.codigo);
     }
 
     public int getCodigo() {

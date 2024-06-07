@@ -10,47 +10,57 @@ import java.util.ArrayList;
 import domain.Categoria;
 import interfaces.*;
 
-public class CategoriaDAO implements DAOInterface<Categoria> {
+public class CategoriaDAO implements GenericDAOInterface<Categoria> {
   
   private static final String FILE_PATH = "src\\db\\categorias.txt";
 
   @Override
   public boolean cadastrar(Categoria cat) {
-      FileWriter fw = null;
-      try {
-          fw = new FileWriter(FILE_PATH, true);
-          BufferedWriter bw = new BufferedWriter(fw);
-          bw.write(cat.toString());
-          bw.newLine();
-          bw.close();
-          fw.close();
-      } catch (Exception e) {
-          System.out.println("Erro ao salvar os hospedes: " + e.getMessage());
-          return false;
-      }
-      return true;
+    if(consultar(cat) != null) {
+        return false;
+    }
+    FileWriter fw = null;
+    try {
+        fw = new FileWriter(FILE_PATH, true);
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.write(cat.toString());
+        bw.newLine();
+        bw.close();
+        fw.close();
+    } catch (Exception e) {
+        System.out.println("Erro ao salvar os hospedes: " + e.getMessage());
+        return false;
+    }
+    return true;
       
   }
 
   @Override
   public boolean editar(Categoria cat) {
-      return false;
-      // ArrayList<Hospede> hospedes = listar();
-      // boolean encontrado = false;
-      // for(int i = 0; i < hospedes.size(); i++) {
-      //     if(hospedes.get(i).getCpf().equals(hospede.getCpf())) {
-      //         hospedes.set(i, hospede);
-      //         encontrado = true;
-      //         break;
-      //     }
-      // }
-      // if(encontrado){
-      //     return (hospedes);
-      // } else {
-      //     System.out.println("Hóspede não encontrado");
-      //     return false;
-      // }
-  }
+        if(consultar(cat) != null) {
+            return false;
+        }
+        ArrayList<Categoria> categorias = listar();
+        FileWriter fw = null;
+        try {
+            fw = new FileWriter(FILE_PATH);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for(Categoria c: categorias) {
+                if(c.getCodigo() == cat.getCodigo()) {
+                    bw.write(cat.toString());
+                } else {
+                    bw.write(c.toString());
+                }
+                bw.newLine();
+            }
+            bw.close();
+            fw.close();
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
   
   @Override
   public Categoria consultar(Categoria cat) {
@@ -73,9 +83,11 @@ public class CategoriaDAO implements DAOInterface<Categoria> {
           while(br.ready()) {
               String catString = br.readLine();
               String[] catInfo = catString.split(";");
-              Categoria cat = new Categoria(Integer.parseInt(catInfo[0]), catInfo[1], Double.parseDouble(catInfo[2]));
+              Categoria cat = new Categoria(catInfo);
               categorias.add(cat);
           }
+          br.close();
+          fr.close();
       } catch (IOException e) {
           System.out.println(e);
       }

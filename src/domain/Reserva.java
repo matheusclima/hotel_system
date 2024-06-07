@@ -1,14 +1,20 @@
 package domain;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.ArrayList;
 
-public class Reserva {
+
+import dao.Manager;
+
+public class Reserva extends Generic {
     private int codigo;
-    private Hospede hospede;
-    private Quarto quarto;
-    private Funcionario funcionarioReserva;
-    private Funcionario funcionarioSaida;
+    private Hospede hospede = new Hospede();
+    private Quarto quarto = new Quarto();
+    private Funcionario funcionarioReserva = new Funcionario();
+    private Funcionario funcionarioSaida = new Funcionario();
     private Date dataEntradaReserva;
     private Date dataSaidaReserva;
     private Date dataCheckin;
@@ -16,9 +22,17 @@ public class Reserva {
     private double valorReserva;
     private double valorPago;
 
+    @Override
+    public String toString() {
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        return String.format("%d;%s;%d;%s;%s;%s;%s;%.f;%.f", codigo, hospede.getCpf(), quarto.getCodigo(), 
+                                                df.format(dataEntradaReserva), df.format(dataSaidaReserva),
+                                                df.format(dataCheckin), df.format(dataCheckout), valorReserva, valorPago);
+    }
+
     public Reserva(int codigo, Hospede hospede, Quarto quarto, Funcionario funcionarioReserva,
-            Funcionario funcionarioSaida, Date dataEntradaReserva, Date dataSaidaReserva, Date dataCheckin,
-            Date dataCheckout, double valorReserva, double valorPago) {
+        Funcionario funcionarioSaida, Date dataEntradaReserva, Date dataSaidaReserva, Date dataCheckin,
+        Date dataCheckout, double valorReserva, double valorPago) {
         this.codigo = codigo;
         this.hospede = hospede;
         this.quarto = quarto;
@@ -32,25 +46,43 @@ public class Reserva {
         this.valorPago = valorPago;
     }
 
-    public boolean cadastrar(Reserva reserva) {
-        // TODO
-        return true;
+    public Reserva(String[] attr) {
+        Manager manager = new Manager();
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        
+        this.codigo = Integer.parseInt(attr[0]);
+        this.hospede.setCpf(attr[1]);
+        this.hospede = manager.hospede.consultar(this.hospede);
+
+        this.quarto.setCodigo(Integer.parseInt(attr[2]));
+        this.quarto = manager.quarto.consultar(this.quarto);
+
+        this.funcionarioReserva.setCpf(attr[3]);
+        this.funcionarioReserva = manager.funcionario.consultar(this.funcionarioReserva);
+
+        this.funcionarioSaida.setCpf(attr[4]);
+        this.funcionarioSaida = manager.funcionario.consultar(this.funcionarioSaida);
+
+        try {
+            this.dataEntradaReserva = dateFormat.parse(attr[5]);
+            this.dataEntradaReserva = dateFormat.parse(attr[6]);
+            this.dataCheckin = dateFormat.parse(attr[7]);
+            this.dataCheckout = dateFormat.parse(attr[8]);
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        this.valorPago = Double.parseDouble(attr[9].replace(",", "."));
+        this.valorReserva = Double.parseDouble(attr[10].replace(",", "."));  
     }
 
-    public boolean editar(Reserva reserva) {
-        // TODO
-        return true;
+   
+    @Override
+    public String getId() {
+        return Integer.toString(this.codigo);
     }
 
-    public Reserva consultar(Reserva reserva) {
-        // TODO
-        return reserva;
-    }
-
-    public ArrayList<Reserva> listar(Reserva reserva) {
-        // TODO
-        return new ArrayList<Reserva>();
-    }
 
     public void pagarReserva(int valor) {
         System.out.println("Reserva paga");

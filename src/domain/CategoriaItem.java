@@ -1,7 +1,5 @@
 package domain;
 
-import java.util.ArrayList;
-
 public class CategoriaItem {
     private Item item;
     private Categoria categoria;
@@ -17,26 +15,6 @@ public class CategoriaItem {
         this.item = item;
         this.categoria = categoria;
         this.quantidade = quantidade;
-    }
-
-    public boolean cadastrar(CategoriaItem categoriaItem) {
-        // TODO
-        return true;
-    }
-
-    public boolean editar(CategoriaItem categoriaItem) {
-        // TODO
-        return true;
-    }
-
-    public CategoriaItem consultar(CategoriaItem categoriaItem) {
-        // TODO
-        return categoriaItem;
-    }
-
-    public ArrayList<CategoriaItem> listar(CategoriaItem categoriaItem) {
-        // TODO
-        return new ArrayList<CategoriaItem>();
     }
 
     public Item getItem() {

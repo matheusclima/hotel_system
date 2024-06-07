@@ -1,8 +1,6 @@
 package domain;
 
-import java.util.ArrayList;
-
-public class Item {
+public class Item extends Generic {
     private int codigo;
     private String descricao;
     private double valor;
@@ -19,24 +17,20 @@ public class Item {
         this.valor = valor;
     }
 
-     public boolean cadastrar(Item item) {
-        // TODO
-        return true;
+    public Item(String[] attr) {
+        this.codigo = Integer.parseInt(attr[0]);
+        this.descricao = attr[1];
+        this.valor = Double.parseDouble(attr[2].replace(",", "."));
     }
 
-    public boolean editar(Item item) {
-        // TODO
-        return true;
+    @Override
+    public String getId() {
+        return Integer.toString(this.codigo);
     }
 
-    public Item consultar(Item item) {
-        // TODO
-        return item;
-    }
-
-    public ArrayList<Item> listar(Item item) {
-        // TODO
-        return new ArrayList<Item>();
+    @Override
+    public String toString() {
+        return String.format("%d;%s;%.2f", this.codigo, this.descricao, this.valor);
     }
 
     public int getCodigo() {

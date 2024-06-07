@@ -1,7 +1,5 @@
 package domain;
 
-import java.util.ArrayList;
-
 public class Funcionario extends Pessoa {
     private String setor;
 
@@ -14,25 +12,15 @@ public class Funcionario extends Pessoa {
         super(cpf, nome, email);
         this.setor = setor;
     }
-
-    public boolean cadastrar(Funcionario func) {
-        // TODO
-        return true;
+    
+    public Funcionario(String[] attr) {
+        super(attr);
+        this.setor = attr[attr.length - 1];
     }
 
-    public boolean editar(Funcionario func) {
-        // TODO
-        return true;
-    }
-
-    public Funcionario consultar(Funcionario func) {
-        // TODO
-        return func;
-    }
-
-    public ArrayList<Funcionario> listar(Funcionario func) {
-        // TODO
-        return new ArrayList<Funcionario>();
+    @Override
+    public String toString() {
+        return String.format("%s;%s;%s;%s", this.getCpf(), this.getNome(), this.getEmail(), this.getSetor());
     }
 
     public String getSetor() {
