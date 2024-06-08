@@ -9,7 +9,7 @@ public class Quarto extends Generic {
 
     public Quarto() {
         this.codigo = 0;
-        this.categoria = null;
+        this.categoria = new Categoria();
         this.status = "";
     }
 
@@ -22,7 +22,6 @@ public class Quarto extends Generic {
     public Quarto(String[] attr) {
         Manager manager = new Manager(); 
         this.codigo = Integer.parseInt(attr[0]);
-        this.categoria = new Categoria();
         this.categoria.setCodigo(Integer.parseInt(attr[1]));
         this.categoria = manager.categoria.consultar(this.categoria);
         this.status = attr[2];

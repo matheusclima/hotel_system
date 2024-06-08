@@ -1,9 +1,8 @@
 package domain;
 
 import java.util.Date;
-import java.util.ArrayList;
 
-public class ConsumoServico {
+public class ConsumoServico extends Generic {
     private Servico servico;
     private Consumo consumo;
     private Reserva reserva;
@@ -11,11 +10,11 @@ public class ConsumoServico {
     private Date dataServico;
 
     public ConsumoServico() {
-        this.servico = null;
-        this.consumo = null;
-        this.reserva = null;
+        this.servico = new Servico();
+        this.consumo = new Consumo();
+        this.reserva = new Reserva();
         this.quantidadeSolicitada = 0;
-        this.dataServico = null;
+        this.dataServico = new Date();
     }
 
     public ConsumoServico(Servico servico, Consumo consumo, Reserva reserva, int quantidadeSolicitada,
@@ -27,24 +26,14 @@ public class ConsumoServico {
         this.dataServico = dataServico;
     }
 
-    public boolean cadastrar(ConsumoServico consumoServico) {
-        // TODO
-        return true;
+    public ConsumoServico(String[] attr) {
+        this.servico.setCodigo(Integer.parseInt(attr[0]));
+        this.reserva.setCodigo(Integer.parseInt(attr[1]));
     }
 
-    public boolean editar(ConsumoServico consumoServico) {
-        // TODO
-        return true;
-    }
-
-    public ConsumoServico consultar(ConsumoServico consumoServico) {
-        // TODO
-        return consumoServico;
-    }
-
-    public ArrayList<ConsumoServico> listar(ConsumoServico consumoServico) {
-        // TODO
-        return new ArrayList<ConsumoServico>();
+    @Override
+    public String getId() {
+        return String.valueOf(this.reserva.getCodigo());
     }
 
     public Servico getServico() {

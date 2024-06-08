@@ -41,7 +41,7 @@ public class GenericDAO<T extends Generic> implements GenericDAOInterface<T> {
 
     @Override
     public boolean editar(T objecT) {
-        if(consultar(objecT) != null) return false;
+        if(consultar(objecT) == null) return false;
         
         ArrayList<T> objecTs = listar();
         FileWriter fw = null;

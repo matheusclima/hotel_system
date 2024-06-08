@@ -3,7 +3,6 @@ package domain;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -11,10 +10,10 @@ import dao.Manager;
 
 public class Reserva extends Generic {
     private int codigo;
-    private Hospede hospede = new Hospede();
-    private Quarto quarto = new Quarto();
-    private Funcionario funcionarioReserva = new Funcionario();
-    private Funcionario funcionarioSaida = new Funcionario();
+    private Hospede hospede;
+    private Quarto quarto;
+    private Funcionario funcionarioReserva;
+    private Funcionario funcionarioSaida;
     private Date dataEntradaReserva;
     private Date dataSaidaReserva;
     private Date dataCheckin;
@@ -22,12 +21,18 @@ public class Reserva extends Generic {
     private double valorReserva;
     private double valorPago;
 
-    @Override
-    public String toString() {
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        return String.format("%d;%s;%d;%s;%s;%s;%s;%.f;%.f", codigo, hospede.getCpf(), quarto.getCodigo(), 
-                                                df.format(dataEntradaReserva), df.format(dataSaidaReserva),
-                                                df.format(dataCheckin), df.format(dataCheckout), valorReserva, valorPago);
+    public Reserva() {
+        this.codigo = 0;
+        this.hospede = new Hospede();
+        this.quarto = new Quarto();
+        this.funcionarioReserva = new Funcionario();
+        this.funcionarioSaida = new Funcionario();
+        this.dataEntradaReserva = new Date();
+        this.dataSaidaReserva = new Date();
+        this.dataCheckin = new Date();
+        this.dataCheckout = new Date();
+        this.valorReserva = 0.0;
+        this.valorPago = 0.0;
     }
 
     public Reserva(int codigo, Hospede hospede, Quarto quarto, Funcionario funcionarioReserva,
@@ -62,22 +67,29 @@ public class Reserva extends Generic {
 
         this.funcionarioSaida.setCpf(attr[4]);
         this.funcionarioSaida = manager.funcionario.consultar(this.funcionarioSaida);
-
+        
         try {
             this.dataEntradaReserva = dateFormat.parse(attr[5]);
             this.dataEntradaReserva = dateFormat.parse(attr[6]);
             this.dataCheckin = dateFormat.parse(attr[7]);
             this.dataCheckout = dateFormat.parse(attr[8]);
         } catch (ParseException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
+        
         this.valorPago = Double.parseDouble(attr[9].replace(",", "."));
         this.valorReserva = Double.parseDouble(attr[10].replace(",", "."));  
     }
 
-   
+    @Override
+    public String toString() {
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        return String.format("%d;%s;%d;%s;%s;%s;%s;%s;%s;%.2f;%.2f", codigo, hospede.getCpf(), quarto.getCodigo(), 
+                                                funcionarioReserva.getCpf(), funcionarioSaida.getCpf(),
+                                                df.format(dataEntradaReserva), df.format(dataSaidaReserva),
+                                                df.format(dataCheckin), df.format(dataCheckout), valorReserva, valorPago);
+    }
+
     @Override
     public String getId() {
         return Integer.toString(this.codigo);

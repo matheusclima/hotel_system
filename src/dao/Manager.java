@@ -8,6 +8,8 @@ public class Manager {
     public GenericDAO<Servico> servico;
     public GenericDAO<Quarto> quarto;
     public GenericDAO<Categoria> categoria;
+    public GenericDAO<Reserva> reserva;
+    public GenericDAO<Item> item;
 
     public Manager() {
         hospede = new GenericDAO<>("src\\db\\hospedes.txt", Hospede.class);
@@ -15,5 +17,7 @@ public class Manager {
         servico = new GenericDAO<>("src\\db\\servicos.txt", Servico.class);
         quarto = new GenericDAO<>("src\\db\\quartos.txt", Quarto.class);
         categoria = new GenericDAO<>("src\\db\\categorias.txt", Categoria.class);
+        reserva = new GenericDAO<>("src\\db\\reservas.txt", Reserva.class);
+        item = new GenericDAO<>("src\\db\\itens.txt", Item.class);
     }
 }

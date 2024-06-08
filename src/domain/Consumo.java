@@ -1,19 +1,23 @@
 package domain;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.ArrayList;
 
-public class Consumo {
+import dao.Manager;
+
+public class Consumo extends Generic {
     private Item item;
     private Reserva reserva;
     private int quantidadeSolicitada;
     private Date dataConsumo;
 
     public Consumo() {
-        this.item = null;
-        this.reserva = null;
+        this.item = new Item();
+        this.reserva = new Reserva();
         this.quantidadeSolicitada = 0;
-        this.dataConsumo = null;
+        this.dataConsumo = new Date();
     }
 
     public Consumo(Item item, Reserva reserva, int quantidadeSolicitada, Date dataConsumo) {
@@ -22,27 +26,35 @@ public class Consumo {
         this.quantidadeSolicitada = quantidadeSolicitada;
         this.dataConsumo = dataConsumo;
     }
+
+    public Consumo(String[] attr) {
+        Manager manager = new Manager();
+        this.item.setCodigo(Integer.parseInt(attr[0]));
+        this.item = manager.item.consultar(this.item);
+        this.reserva.setCodigo(Integer.parseInt(attr[1]));
+        this.reserva = manager.reserva.consultar(this.reserva);
+        this.quantidadeSolicitada = Integer.parseInt(attr[2]);
+        try {
+            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            this.dataConsumo = df.parse(attr[3]);
+        } catch (ParseException e) {
+            // TODO: handle exception
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public String toString() {
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        return String.format("%d;%d;%d;%s", item.getCodigo(), 
+                        reserva.getCodigo(), quantidadeSolicitada, df.format(dataConsumo));
+    }
+
+    @Override
+    public String getId() {
+        return String.valueOf(this.reserva.getCodigo());
+    }
     
-    public boolean cadastrar(Consumo consumo) {
-        // TODO
-        return true;
-    }
-
-    public boolean editar(Consumo consumo) {
-        // TODO
-        return true;
-    }
-
-    public Consumo consultar(Consumo consumo) {
-        // TODO
-        return consumo;
-    }
-
-    public ArrayList<Consumo> listar(Consumo consumo) {
-        // TODO
-        return new ArrayList<Consumo>();
-    }
-
     public Item getItem() {
         return item;
     }
