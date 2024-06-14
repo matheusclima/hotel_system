@@ -7,5 +7,4 @@ public interface GenericDAOInterface<T> {
     public boolean editar(T objetoT ); 
     public T consultar(T objetoT); 
     public ArrayList<T> listar();
-    // public boolean excluir(Hospede hospede);
 }

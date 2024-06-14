@@ -1,14 +1,11 @@
 package domain;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import dao.Gerenciador;
+import utils.DateConversor;
 
-import dao.Manager;
-
-public class Reserva extends Generic {
+public class Reserva {
     private int codigo;
     private Hospede hospede;
     private Quarto quarto;
@@ -52,51 +49,35 @@ public class Reserva extends Generic {
     }
 
     public Reserva(String[] attr) {
-        Manager manager = new Manager();
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         
         this.codigo = Integer.parseInt(attr[0]);
+        this.hospede = new Hospede();
         this.hospede.setCpf(attr[1]);
-        this.hospede = manager.hospede.consultar(this.hospede);
+        this.hospede = Gerenciador.hospedeDAO.consultar(this.hospede);
 
+        this.quarto = new Quarto();
         this.quarto.setCodigo(Integer.parseInt(attr[2]));
-        this.quarto = manager.quarto.consultar(this.quarto);
+        this.quarto = Gerenciador.quartoDAO.consultar(this.quarto);
 
+        this.funcionarioReserva = new Funcionario();
         this.funcionarioReserva.setCpf(attr[3]);
-        this.funcionarioReserva = manager.funcionario.consultar(this.funcionarioReserva);
+        this.funcionarioReserva = Gerenciador.funcionarioDAO.consultar(this.funcionarioReserva);
 
+        this.funcionarioSaida = new Funcionario();
         this.funcionarioSaida.setCpf(attr[4]);
-        this.funcionarioSaida = manager.funcionario.consultar(this.funcionarioSaida);
+        this.funcionarioSaida = Gerenciador.funcionarioDAO.consultar(this.funcionarioSaida);
         
-        try {
-            this.dataEntradaReserva = dateFormat.parse(attr[5]);
-            this.dataEntradaReserva = dateFormat.parse(attr[6]);
-            this.dataCheckin = dateFormat.parse(attr[7]);
-            this.dataCheckout = dateFormat.parse(attr[8]);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        this.dataEntradaReserva = DateConversor.parse(attr[5]);
+        this.dataEntradaReserva = DateConversor.parse(attr[6]);
+        this.dataCheckin = DateConversor.parse(attr[7]);
+        this.dataCheckout = DateConversor.parse(attr[8]);
         
         this.valorPago = Double.parseDouble(attr[9].replace(",", "."));
         this.valorReserva = Double.parseDouble(attr[10].replace(",", "."));  
     }
 
-    @Override
-    public String toString() {
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        return String.format("%d;%s;%d;%s;%s;%s;%s;%s;%s;%.2f;%.2f", codigo, hospede.getCpf(), quarto.getCodigo(), 
-                                                funcionarioReserva.getCpf(), funcionarioSaida.getCpf(),
-                                                df.format(dataEntradaReserva), df.format(dataSaidaReserva),
-                                                df.format(dataCheckin), df.format(dataCheckout), valorReserva, valorPago);
-    }
-
-    @Override
-    public String getId() {
-        return Integer.toString(this.codigo);
-    }
-
-
     public void pagarReserva(int valor) {
+        this.valorPago = valor;
         System.out.println("Reserva paga");
     }
 
@@ -186,7 +167,5 @@ public class Reserva extends Generic {
 
     public void setValorPago(double valorPago) {
         this.valorPago = valorPago;
-    }
-
-    
+    }    
 }

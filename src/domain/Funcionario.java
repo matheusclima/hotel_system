@@ -18,11 +18,6 @@ public class Funcionario extends Pessoa {
         this.setor = attr[attr.length - 1];
     }
 
-    @Override
-    public String toString() {
-        return String.format("%s;%s;%s;%s", this.getCpf(), this.getNome(), this.getEmail(), this.getSetor());
-    }
-
     public String getSetor() {
         return setor;
     }

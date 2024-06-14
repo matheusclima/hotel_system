@@ -1,6 +1,6 @@
 package domain;
 
-public class Servico extends Generic{
+public class Servico {
     private int codigo;
     private String descricao;
     private double valor;
@@ -21,16 +21,6 @@ public class Servico extends Generic{
         this.codigo = Integer.parseInt(attr[0]);
         this.descricao = attr[1];
         this.valor = Double.parseDouble(attr[2].replace(",", "."));
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%d;%s;%.2f", this.codigo, this.descricao, this.valor);
-    }
-
-    @Override
-    public String getId() {
-        return Integer.toString(codigo);
     }
 
     public int getCodigo() {

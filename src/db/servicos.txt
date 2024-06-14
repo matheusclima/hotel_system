@@ -1,1 +1,2 @@
-1;Massagem Terapeutica;54,90
+1;Massagem;49,90
+2;Limpeza;15,40

@@ -1,6 +1,6 @@
 package domain;
 
-public abstract class Pessoa extends Generic {
+public abstract class Pessoa {
     private String cpf;
     private String nome;
     private String email;
@@ -21,11 +21,6 @@ public abstract class Pessoa extends Generic {
         this.cpf = attr[0];
         this.nome = attr[1];
         this.email = attr[2];
-    }
-
-    @Override
-    public String getId() {
-        return this.cpf;
     }
 
     public String getCpf() {

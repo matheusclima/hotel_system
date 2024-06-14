@@ -2,38 +2,41 @@ package domain;
 
 import java.util.Date;
 
-public class ConsumoServico extends Generic {
+import dao.Gerenciador;
+import utils.DateConversor;
+
+public class ReservaServico {
     private Servico servico;
-    private Consumo consumo;
     private Reserva reserva;
     private int quantidadeSolicitada;
     private Date dataServico;
 
-    public ConsumoServico() {
+    public ReservaServico() {
         this.servico = new Servico();
-        this.consumo = new Consumo();
         this.reserva = new Reserva();
         this.quantidadeSolicitada = 0;
         this.dataServico = new Date();
     }
 
-    public ConsumoServico(Servico servico, Consumo consumo, Reserva reserva, int quantidadeSolicitada,
+    public ReservaServico(Servico servico, Reserva reserva, int quantidadeSolicitada,
             Date dataServico) {
         this.servico = servico;
-        this.consumo = consumo;
         this.reserva = reserva;
         this.quantidadeSolicitada = quantidadeSolicitada;
         this.dataServico = dataServico;
     }
 
-    public ConsumoServico(String[] attr) {
+    public ReservaServico(String[] attr) {
+        this.servico = new Servico();
         this.servico.setCodigo(Integer.parseInt(attr[0]));
-        this.reserva.setCodigo(Integer.parseInt(attr[1]));
-    }
+        this.servico = Gerenciador.servicoDAO.consultar(this.servico);
 
-    @Override
-    public String getId() {
-        return String.valueOf(this.reserva.getCodigo());
+        this.reserva = new Reserva();
+        this.reserva.setCodigo(Integer.parseInt(attr[1]));
+        this.reserva = Gerenciador.reservaDAO.consultar(this.reserva);
+
+        this.quantidadeSolicitada = Integer.parseInt(attr[2]);
+        this.dataServico = DateConversor.parse(attr[3]);
     }
 
     public Servico getServico() {
@@ -42,14 +45,6 @@ public class ConsumoServico extends Generic {
 
     public void setServico(Servico servico) {
         this.servico = servico;
-    }
-
-    public Consumo getConsumo() {
-        return consumo;
-    }
-
-    public void setConsumo(Consumo consumo) {
-        this.consumo = consumo;
     }
 
     public Reserva getReserva() {
